@@ -5,7 +5,7 @@ using namespace std;
 unsigned int sanity_check(int a){
 	unsigned int b = (unsigned int) a;
     if (a < 0) {
-        throw std::invalid_argument("received negative value");
+        throw invalid_argument("received negative value");
     }
     else{
 		return b;
@@ -47,8 +47,8 @@ int * wholediv_two(int a, int b){
 	if((a*b)>0){ // negative * negative OR positive * positive
 		return (int *) wholediv(au,bu);
 	}else if (a<0){
-		result[0] = (-1 * a - (-1 * a % b) / 3);
-		result[1] = (-1 * a) % b;
+		result[1] = b - (-1 * a) % b;
+		result[0] = -(-1*a +result[1])/b;
 		return result;
 	}else{
 		int * temp = (int *) wholediv(au,bu);
@@ -69,7 +69,7 @@ int gcd(int a, int b) {
 }
 
 int * quot(int a, int b){	
-	if(b == 0){throw std::invalid_argument("received zero");}
+	if(b == 0){throw invalid_argument("received zero");}
 	int div = gcd(a,b); // apparently you need c++17 for that
 	static int result[2];
 	result[0] = a / div;

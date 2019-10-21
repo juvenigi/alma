@@ -1,0 +1,32 @@
+* Lesson #1 [2019-10-16 Mi]
+
+** Code
+
+*** TASK1: Print "Hello World"
+
+
+*** TASK 2:
+**** TASK2P1: summation function
+     scan 2 values from user input -> x,y
+     print the summation
+
+**** TASK2P2: quotient
+     calculate x / y (presumably division with doubles)
+
+**** TASL2P3: precision
+     precision(3)
+
+*** TASK3:
+
+**** TASK3P1: just implement whole division for positive integers only
+
+**** TASK3P2: do the same but only using integer division and multiplication (redefine modulo)
+
+**** TASK3P3: implement an algorithm for whole numbers (the rest is always positive)
+
+*** TASK4:
+
+**** TASK4P1: check if a number a power of two using modulo and division
+
+**** TASK4P2: do the same but using bitwise AND (&) operator in one line only.
+

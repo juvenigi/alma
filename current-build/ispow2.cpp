@@ -1,1 +1,0 @@
-../src/ispow2.cpp

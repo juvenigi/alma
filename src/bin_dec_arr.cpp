@@ -7,20 +7,13 @@
 
 using namespace std;
 
- int * int_decarr(int number){
-  string numstr = to_string(number);
-  int * numarray = (int*) malloc(sizeof(int)*numstr.length());
-  for(unsigned int i = 0; i<numstr.length();i++){
-    //numarray[i] = stoi(numstr.substr(i,1));
-    numarray[i] = number % 10;
-    number /= 10;
-  }
-  return numarray;
-}
+/* TODO:
+ * change int to unsigned int to avoid negative numbers
+ */
 
-unsigned int bilen(unsigned long long int a){
+int bilen(int a){
   int length;
-  for(unsigned long long int i = 0; a-pow(2,i) >= 0; ++i){
+  for( int i = 0; a-pow(2,i) >= 0; ++i){
     length = i;
   }
   return length + 1;
@@ -40,10 +33,22 @@ void printdec(int * in, unsigned int length){
   cout << endl;
 }
 
-bool * int_boolarr(unsigned long long int value){
-  int len = bilen(value);
-  bool * array = (bool *) malloc(sizeof(bool)*len);
-  for(unsigned long int i = len-1; i>0; i--){
+int * int_decarr(int number, OUT int * length){
+  string numstr = to_string(number);
+  *length = (int) numstr.length();
+  int * numarray = (int*) malloc(sizeof(int) * (*length));
+  for(unsigned int i = 0; i<numstr.length();i++){
+    //numarray[i] = stoi(numstr.substr(i,1));
+    numarray[i] = number % 10;
+    number /= 10;
+  }
+  return numarray;
+}
+
+bool * int_boolarr(int value, OUT int * length){
+  *length = bilen(value);
+  bool * array = (bool *) malloc(sizeof(bool) * (*length));
+  for(int i = *length-1; i>0; i--){
     if(value - pow(2,i)>=0){
       value = value - pow(2,i);
       array[i] = 1;
@@ -54,27 +59,26 @@ bool * int_boolarr(unsigned long long int value){
   return array;
 }
 
-int * sum_decarr(int * num1, int * num2, int lnum1, int lnum2){
-  int length;
+int * sum_decarr(int * num1, int * num2, int lnum1, int lnum2, OUT int * length){
   if(lnum1>lnum2){
-    length = lnum1;
+    *length = lnum1;
+  }else{
+    *length = lnum2;
   }
-  else{
-    length = lnum2;
-  }
-  int * outarr = (int *) malloc(sizeof(int) * ++length);
-  for(int i = 0; i<length; i++){
+
+  int * outarr = (int *) malloc(sizeof(int) * ++*length); // zero out the array
+  for(int i = 0; i<*length; i++){
     outarr[i] = 0;
   }
-  
-  for(int i = 0; i<lnum1; i++){
+
+  for(int i = 0; i<lnum1; i++){ // copy the first number
     outarr[i] = num1[i];
   }
 
-  int carry = 0;
+  bool carry = 0; // carry digit, it's funny but it can only be 1 if you're adding numbers
   for(int i = 0; i<lnum2; i++){
     int sum = outarr[i] + num2[i] + carry;
-    if(sum >= 10){
+    if(sum >= 10){ // in case of digit overflow
       sum = 10 - sum;
       carry = 1;
     }
@@ -83,54 +87,81 @@ int * sum_decarr(int * num1, int * num2, int lnum1, int lnum2){
     }
     outarr[i] = sum;
   }
-  outarr[length-1] = carry;
-  return outarr;
+  outarr[*length-1] = carry; // the last carry digit
+  return outarr; // the funcion outputs a number with a leading zero, shouldn't be a problem.
 }
 
 void shift_boolarr(bool * arr, int length){
-  for(;;){}
+  for(int i = length-1; i>0; --i){
+    arr[i] = arr[i-1];
+  }
+  arr[0] = 0;
 }
 
-bool * sum_boolarr(bool * bool1, int * bool2, int len1, int len2){
-  int outlen;
-  if(len1>len2){
-    outlen = len1;
-  }else{
-    outlen = len2;
+bool isZero(bool * arr, int length){
+  for(int i = length-1; i>=0; i--){
+    if(arr[i] != 0){
+      return false;
+    }
   }
-  bool * outarr = (bool *) malloc(sizeof(bool) * ++outlen);
-  //bool outcarry[];
-  for(int i = 0; i<outlen; i++){
+  return true;
+}
+
+bool * sum_boolarr(bool * bool1, bool * bool2, int len1, int len2, OUT int * outlen){
+  if(len1>len2){
+    *outlen = len1;
+  }else{
+    *outlen = len2;
+  }
+
+  bool * outarr = (bool *) malloc(sizeof(bool) * ++(*outlen));
+  bool * bool2b = (bool *) malloc(sizeof(bool) * (*outlen));
+  bool * carryr = (bool *) malloc(sizeof(bool) * (*outlen));
+
+  for(int i = 0; i<*outlen; i++){
     outarr[i] = 0;
+    carryr[i] = 0;
+    bool2b[i] = 0;
   }
 
   for(int i = 0; i<len1; i++){
-    outarr[i] = bool1[i];
+    outarr[i]=bool1[i];
   }
-  bool carry = 
-  // for(int i = 0; i<len2; i++){
-  //   if(((a|b)&c|(a&b))){carry true;}
-  //   outarr[i] = a&b&c
+  for(int i = 0; i<len2; i++){
+    bool2b[i] = bool2[i];
+  }
+  carryr[0] = 1;
+  while(!isZero(carryr,*outlen)){
+    for(int i = 0; i<*outlen; i++){
+      carryr[i] = outarr[i] & bool2b[i];
+      outarr[i] = outarr[i] ^ bool2b[i];
+    }
+    shift_boolarr(carryr, *outlen);
+    for(int i=0; i<*outlen; i++){
+      bool2b[i] = carryr[i];
+    }
+  }
   return outarr;
 }
 
-    
+
 int main(void){
-  int number = 90;
-  int number2 = 12;
-  int number3 = 45;
-  int number4 = 55;
-  int * decarr = int_decarr(number);
-  int * decarr2 = int_decarr(number2);
-  int * d3 = int_decarr(number3);
-  int * d4 = int_decarr(number4);
-  int * decsum = sum_decarr(decarr, decarr2, 2, 2);
-  int * ds2 = sum_decarr(d3, d4, 2, 2);
-  bool * binarr = int_boolarr(number);
-  printdec(decsum,3);
-  printdec(ds2,3);
-  printdec(decarr, sizeof(decarr)/sizeof(int));
-  printbool(binarr,sizeof(binarr)/sizeof(bool));
-  //cout << decarr[1] << decarr[0] << endl;
+
+  int n1 = 20;
+  int n2 = 69;
+  int nb1_l;
+  int nb2_l;
+  bool * nb1 = int_boolarr(n1,&nb1_l);
+  bool * nb2 = int_boolarr(n2,&nb2_l);
+
+  int nbs_l;
+  bool * nbs = sum_boolarr(nb1,nb2,nb1_l,nb2_l,&nbs_l);
+
+  cout << n1 << " " << n2 << endl;
+
+  printbool(nb1,nbs_l);
+  printbool(nb2,nbs_l);
+  printbool(nbs,nbs_l);
+
   return 0;
 }

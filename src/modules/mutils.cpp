@@ -24,13 +24,15 @@ unsigned int sanity_sgn(int a){
  /* } */
 
 void wholediv_pos(unsigned int q, unsigned int n, OUT unsigned int * out){
+  if(n==0){throw invalid_argument("cannot divide by zero");}
   unsigned int rest = q % n;
   unsigned int div  = q / n;
   out[0] = div;
   out[1] = rest;
 }
 
-void wholediv_pos_shitty(unsigned int m, unsigned int n, OUT unsigned int * out){
+void wholediv_pos_basic(unsigned int m, unsigned int n, OUT unsigned int * out){
+  if(n==0){throw invalid_argument("cannot divide by zero");}
   unsigned int r;
   unsigned int q = 0;
   while(m >= n){
@@ -49,9 +51,9 @@ void wholediv(int m, int n, OUT int * out){
   unsigned int nu = sanity_sgn(n);
 
   static unsigned int w_result[2];
-  wholediv_pos_shitty(mu,nu,w_result);
+  wholediv_pos_basic(mu,nu,w_result);
 
-  if(m<0 && n<0){ // q/n is positive
+  if(m<0 && n<0){
     out[0] = (int) w_result[0];
     out[1] = -1 * (int) w_result[1];
   }else if(m*n>0){
@@ -68,7 +70,7 @@ void wholediv(int m, int n, OUT int * out){
 
 unsigned int m_mod(unsigned int a, unsigned int b){
   static unsigned int temp[2];
-  wholediv_pos_shitty(a,b,temp);
+  wholediv_pos_basic(a,b,temp);
   return temp[1];
 }
 

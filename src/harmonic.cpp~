@@ -1,0 +1,17 @@
+#include<iostream>
+
+float harmonic(int iterations){
+  float sum = 1;
+  for(unsigned int i = 0; i<=iterations; i++){
+    sum += 1/i;
+  }
+  return sum;  
+}
+int main(void){
+
+  int n = 5;
+  //cin << 5;
+
+  cout << harmonic(n) << endl;
+  return 0;
+}

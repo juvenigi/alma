@@ -1,0 +1,13 @@
+#include<iostream>
+#include"./isprime.cpp"
+
+int main(void){
+  unsigned int iterations = 10e6
+  unsigned long int sum = 0;
+  for(unsigned int i = 2; i=<iterations; i++){
+    if(isprimep(i)){
+      sum += i}
+  }
+  cout << sum;
+  return 0;
+}

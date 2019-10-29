@@ -1,0 +1,5 @@
+
+int main(void){
+
+  bool * array = new bool[10e7];
+}

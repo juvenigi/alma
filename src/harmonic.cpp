@@ -6,7 +6,7 @@ float harmonic(int iterations){
   for(int i = 1; i<=iterations; i++){
     sum += 1./i;
   }
-  return sum;  
+  return sum;
 }
 
 float inv_harmonic(int iterations){

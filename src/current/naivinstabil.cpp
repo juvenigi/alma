@@ -15,7 +15,7 @@ double naivesum(double c,int imax){
 
   for(int i=1;i<=imax;i++){
     c = i*c-1;
-    //cout << c <<endl;
+    cout << c <<endl;
   }
   //cout <<endl;
   return c;
@@ -86,13 +86,14 @@ int main(void){
   int b = 33096;
 
   cout
-    << c <<endl
-    << naivesum(c,25) <<endl
-    << fnaivesum(fc,25)<<endl
-    << lnaivesum(lc,25)<<endl
-       // << mindboggle(a,b)<<endl
-       // << mindoggle(a,b)<<endl
-       // << mindlonggle(a,b)<<endl
+    //<< c <<endl
+    //<< lc <<endl
+    //<< naivesum(c,25) <<endl
+    //<< fnaivesum(fc,25)<<endl
+    //<< lnaivesum(lc,25)<<endl
+    << mindboggle(a,b)<<endl
+    << mindoggle(a,b)<<endl
+    << mindlonggle(a,b)<<endl
     ;
   return 0;
 }

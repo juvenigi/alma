@@ -5,13 +5,13 @@
 using namespace std;
 
 void pv(vector<unsigned long int> v){
-  for(unsigned int i = 0; i<v.size(); i++) cout << v[i] <<endl;
+  for(unsigned int i = 0; i<v.size(); i++) {cout << v[i] << " ";}
   cout <<endl;
 }
 
 // function overload to support strings
 void pv(vector<string> v){
-  for(unsigned int i = 0; i<v.size(); i++) cout << v[i] <<endl;
+  for(unsigned int i = 0; i<v.size(); i++) {cout << v[i] << " ";}
   cout <<endl;
 }
 

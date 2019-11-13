@@ -30,3 +30,8 @@
 
 **** TASK4P2: do the same but using bitwise AND (&) operator in one line only.
 
+* Lesson #5 [2019-11-13 Mi]
+** names
+../src/quicksort.cpp
+../src/mergesort.cpp
+../src/mandelplot.cpp

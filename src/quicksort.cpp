@@ -1,7 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<string>
-#include"vutils.hxx"
+#include"deps/vutils.cpp" //FIXME: don't be lazy
 
 #define SIZ 10e6
 

@@ -1,14 +1,20 @@
 #include<iostream>
 #include<vector>
+#include<string>
 
 #define SIZ 10e6
 
 using namespace std;
 
 void pv(vector<unsigned long int> v){
-  for(unsigned int i = 0; i<v.size(); i++){
-    cout << v[i] <<endl;
-  }
+  for(unsigned int i = 0; i<v.size(); i++) cout << v[i] <<endl;
+  cout <<endl;
+}
+
+// function overload to support strings
+void pv(vector<string> v){
+  for(unsigned int i = 0; i<v.size(); i++) cout << v[i] <<endl;
+  cout <<endl;
 }
 
 // https://stackoverflow.com/questions/47232384/non-repeating-random-numbers-in-vector-c
@@ -27,30 +33,39 @@ vector<unsigned long int> randomized_v(unsigned int size){
   return v;
 }
 
+vector<string> vconvert_str_i(vector<unsigned long int> v){
+  vector<string>out;
+  for(unsigned long int x : v) out.push_back(to_string(x));
+  return out;
+}
+
+vector<unsigned long int> vconvert_str_i(vector<string> v){
+  vector<unsigned long int>out;
+  for(string x : v) out.push_back(stoi(x));
+  return out;
+}
+
+
 vector<unsigned long int> merge(vector<unsigned long int> a, vector<unsigned long int> b){
   vector<unsigned long int> result;
-  unsigned int mi = 0;
-  unsigned int mj = 0;
-  while(mi<a.size() and mj<b.size()){
-    switch(a[mi]>b[mj]){
-    case true:
-      result.push_back(b[mj]);
-      b.erase(b.begin()+mj);
-      mj++;
-      break;
-    default:
-      result.push_back(a[mi]);
-      a.erase(a.begin()+mi);
-      mi++;
+  while(a.size() or b.size()){
+    if(a.size()!=0 and b.size()!=0){
+      switch(a[a.size()-1]>b[b.size()-1]){
+      case true:
+        result.insert(result.begin(),a[a.size()-1]);
+        a.pop_back();
+        break;
+      default:
+        result.insert(result.begin(),b[b.size()-1]);
+        b.pop_back();
+      }
+    }else if(a.size()==0 && b.size()!=0){
+      result.insert(result.begin(),b[b.size()-1]);
+      b.pop_back();
+    }else if(b.size()==0 && a.size()!=0){
+      result.insert(result.begin(),a[a.size()-1]);
+      a.pop_back();
     }
-  }
-  if(a.size()){
-    result.reserve(result.size()+a.size());
-    result.insert(result.end(),a.begin(),a.end());
-  }
-  if(b.size()){
-    result.reserve(result.size()+b.size());
-    result.insert(result.end(),b.begin(),b.end());
   }
   return result;
 }
@@ -59,7 +74,7 @@ vector<unsigned long int> mergesort(vector<unsigned long int>unsort){
   size_t const half_size = unsort.size() / 2;
   vector<unsigned long int> a(unsort.begin(), unsort.begin() + half_size);
   vector<unsigned long int> b(unsort.begin() + half_size, unsort.end());
-  if(unsort.size()>4){  
+  if(unsort.size()>2){
     a = mergesort(a);
     b = mergesort(b);
     return merge(a,b);
@@ -67,15 +82,23 @@ vector<unsigned long int> mergesort(vector<unsigned long int>unsort){
   return merge(a,b);
 }
 
+vector<string> mergesort(vector<string>unsort){
+  return vconvert_str_i(mergesort(vconvert_str_i(unsort)));
+}
+
 int main(void){
-  // initialize a big range
   vector<unsigned long int> v = randomized_v(5);
   //pv(v);
-  vector<unsigned long int> merged = mergesort(v);
-  //vector<unsigned long int> quickd = quicksort(v);
 
+  vector<string> sv = vconvert_str_i(v);
+  //pv(sv);
+
+  vector<unsigned long int> merged = mergesort(v);
   pv(merged);
-  //pv(quicked);
-  
+
+  vector<string> smerged = mergesort(sv);
+  pv(smerged);
+
   return 0;
 }
+

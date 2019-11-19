@@ -14,12 +14,8 @@
 
 #define SQ(x) ((x)*(x))
 
-// int constexpr dimx = 2500;
-// int constexpr dimy = 2200;
-
-int constexpr dimx = 2500 /2;
-int constexpr dimy = 2200 /2;
-
+int constexpr dimx = 2500;
+int constexpr dimy = 2200;
 
 double constexpr re_min = -1.9;
 double constexpr re_max = 0.6;
@@ -119,11 +115,14 @@ int main(void){
         << dimy << " " << dimx << endl
         << 255 << endl;
 
+
   for(size_t bx = 0; bx < blocks_x; bx++){
-      for(int v = 0; v < veclen; v++){
-        for(size_t y = 0; y < dimy; y++){
+    for(size_t v = 0; v < veclen; v++){
+      for(size_t y = 0; y < dimy; y++){
+
         double val = sieve[idx(bx, y) * veclen + v];
-        mplot << (int) pow((val / max_iter),0.2)*255 <<endl;
+        // mplot << (int) pow((val / max_iter),0.2)*255 <<endl;
+        mplot << (int) ((pow(val / max_iter,0.2)*255)) << endl;
       }
     }
   }

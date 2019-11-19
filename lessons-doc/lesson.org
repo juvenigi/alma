@@ -35,3 +35,26 @@
 ../src/quicksort.cpp
 ../src/mergesort.cpp
 ../src/mandelplot.cpp
+** MANDELPLOT.CPP
+
+*** concept
+
+use ncurses to quickly display what you're going to render
+have box select, move keys, zoom in-out (centered), squarify
+some sort of coordinate system at the bottom end of the screen (perhaps even toggleable)
+have a "render" key to render a pgm/png
+
+create a 2d vector with the size of screen resolution, store mandelbrot values. 
+this way we can speed up zooming in / moving screen because we don't need to recalculate everything (only shift values)
+|-> correction: you can only save computing time when moving, it's kinda pointless to keep values saved for different zoom levels (but this could be a cool feature in the future)
+
+while zooming in, however, it's perhaps unnecessary to keep the old values
+
+
+
+|---+---|
+|   |   |
+|---+---|
+|   |   |
+|---+---|
+

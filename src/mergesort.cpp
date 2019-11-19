@@ -50,7 +50,7 @@ vector<string> mergesort(vector<string>unsort){
 
 int main(void){
   vector<unsigned long int> v = randomized_v(5);
-  //pv(v);
+  pv(v);
 
   vector<string> sv = vconvert_str_i(v);
   //pv(sv);
@@ -59,7 +59,7 @@ int main(void){
   pv(merged);
 
   vector<string> smerged = mergesort(sv);
-  pv(smerged);
+  //pv(smerged);
 
   return 0;
 }

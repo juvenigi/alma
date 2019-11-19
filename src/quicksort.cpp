@@ -36,7 +36,7 @@ vector<unsigned long int>quicksort(vector<unsigned long int> unsort){
 
 int main(void){
   vector<unsigned long int> v = randomized_v(20);
-  //pv(v);
+  pv(v);
 
   vector<string> sv = vconvert_str_i(v);
   //pv(sv);

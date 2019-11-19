@@ -9,15 +9,23 @@
 #include <omp.h>
 #include <memory>
 #include <vector>
+#include <fstream>
+#include <math.h>
 
 #define SQ(x) ((x)*(x))
 
-int constexpr dimx = 2500;
-int constexpr dimy = 2200;
+// int constexpr dimx = 2500;
+// int constexpr dimy = 2200;
+
+int constexpr dimx = 2500 /2;
+int constexpr dimy = 2200 /2;
+
+
 double constexpr re_min = -1.9;
 double constexpr re_max = 0.6;
 double constexpr im_min = -1.1;
 double constexpr im_max = 1.1;
+double constexpr d = (im_max - im_min) / dimy;
 
 size_t constexpr max_iter = 1024;
 double constexpr radius = 4; // was 5 before some some reason
@@ -43,13 +51,14 @@ double get_c_im(size_t const y) {
 using namespace std;
 
 /* mandelbrot set begins here */
-vector<uint16_t> * mandelscript(int dimx, int dimy, int max_iter,
-                               double re_min, double re_max,
-                               double im_min, double im_max,){
-  vector<uint16_t> escape_iter(dimx * dimy, max_iter);
+// vector<uint16_t> * mandelscript(int dimx, int dimy, int max_iter,
+//                                double re_min, double re_max,
+//                                double im_min, double im_max){
+vector<int> mandelscript(){
+  vector<int> escape_iter(dimx * dimy, max_iter);
 
 #pragma omp parallel for collapse(2) // makes it run on all cores (4 in my case)
-  for (size_t y = 0; y < ly; ++y) {
+  for (size_t y = 0; y < dimy; ++y) {
     for (size_t bx = 0; bx < blocks_x; ++bx) {
       alignas(veclen * sizeof(bool)) bool finished[veclen] = {false};
       // alignas(veclen * sizeof(bool)) bool written[veclen] = {false};
@@ -97,5 +106,27 @@ vector<uint16_t> * mandelscript(int dimx, int dimy, int max_iter,
       }
     }
   }
+  //  vector<int> * pointer = *escape_iter;
   return escape_iter;
+}
+
+int main(void){
+  vector<int> sieve = mandelscript();
+
+  std::ofstream mplot;
+  mplot.open("out.pgm");
+  mplot << "P2" <<endl
+        << dimy << " " << dimx << endl
+        << 255 << endl;
+
+  for(size_t bx = 0; bx < blocks_x; bx++){
+      for(int v = 0; v < veclen; v++){
+        for(size_t y = 0; y < dimy; y++){
+        double val = sieve[idx(bx, y) * veclen + v];
+        mplot << (int) pow((val / max_iter),0.2)*255 <<endl;
+      }
+    }
+  }
+  mplot.close();
+  return 0;
 }

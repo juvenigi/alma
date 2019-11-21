@@ -6,6 +6,12 @@
    fork of ncmb.c
    Copyright (c) 2014 smikims (MIT License)
  */
+
+// TODO:
+/* move ncurses stuff into its own file
+ * make main a cpp function
+ * get rid of constexpr everywhere
+ */
 #include <stdio.h>
 #include <curses.h>
 #include <math.h>
@@ -14,7 +20,7 @@
 #include <stdbool.h>
 #include <locale.h>
 #include <string.h>
-#include <mandelscript.hxx> // TODO: implement
+//#include "mandelscript.cpp" // TODO: do it properly with headers
 
 struct zoom_stack {
 	struct zoom_level {
@@ -57,8 +63,8 @@ int height;
 int width;
 
 //printing dimensions
-int constexpr pdimx = 2500;
-int constexpr pdemy = 2200;
+int pdimx = 2500;
+int pdimy = 2200;
 
 double xmin            = DEF_XMIN;
 double xmax            = DEF_XMAX;
@@ -92,7 +98,7 @@ int get_color(double complex c, int max_iter, int ncolors){
 double complex complex_value(int i, int j){
 	return (xmin + j*xstep) + (ymax - i*ystep)*I;
 }
-void draw(vector<uint16_t> sieve){
+void draw(){
 	// Yes, equality with floats is evil, but it's OK becuase we only need
 	// to worry about one value, which I've checked works.
 	// int (*color_alg)(double complex, int, int) = power == 2 ? get_color : get_color_generic;
@@ -335,14 +341,14 @@ void change_var(WINDOW *win, enum CHOICE choice){
 }
 
 //TODO implement helper menu
-void draw_help_menu(WINDOW *win){
-  mvprintw(win, 1, 0,
-           "Hello and welcome!",
-           );
+/* void draw_help_menu(WINDOW *win){ */
+/*   mvprintw(win, 1, 0, */
+/*            "Hello and welcome!", */
+/*            ); */
 
-	box(win, 0, 0);
-	wrefresh(win);
-}
+/* 	box(win, 0, 0); */
+/* 	wrefresh(win); */
+/* } */
 
 void draw_menu(WINDOW *win, int choice){
 	mvwprintw(	win, 1, 0,
@@ -460,9 +466,7 @@ end:
 	delwin(win);
 }
 
-int
-main(void)
-{
+int main(void){
 	// Various options everyone uses with curses
 	setlocale(LC_ALL, "");
 	initscr();
@@ -480,6 +484,8 @@ main(void)
 	while (true) {
 		ch = getch();
 		switch (ch) {
+    case 'P':
+      mfile(pdimx, pdimy, iter, xmin, xmax, ymin, ymax);
 		case KEY_LEFT:
 		case 'h':
 			scrollleft();

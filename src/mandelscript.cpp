@@ -26,7 +26,8 @@ double constexpr im_min = -1.1;
 double constexpr im_max = 1.1;
 double constexpr d = (im_max - im_min) / dimy;
 
-size_t constexpr max_iter = 1024;
+//size_t constexpr max_iter = 1024;
+int constexpr max_iter = 1024;
 double constexpr radius = 4; // was 5 before some some reason
 
 // AVX instruction set allows you to simultaniously compute 4 floats in one go!
@@ -50,10 +51,10 @@ double get_c_im(size_t const y) {
 using namespace std;
 
 /* mandelbrot set begins here */
-// vector<uint16_t> * mandelscript(int dimx, int dimy, int max_iter,
-//                                double re_min, double re_max,
-//                                double im_min, double im_max){
-vector<int> mandelscript(){
+vector<int> mandelscript(int dimx, int dimy, int max_iter,
+                         double re_min, double re_max,
+                         double im_min, double im_max){
+  //vector<int> mandelscript(){
   vector<int> escape_iter(dimx * dimy, max_iter);
 
 #pragma omp parallel for collapse(2) // makes it run on all cores (4 in my case)
@@ -105,14 +106,17 @@ vector<int> mandelscript(){
       }
     }
   }
-  //  vector<int> * pointer = *escape_iter;
   return escape_iter;
 }
 
-int main(void){
+void mandelfile(int dimx, int dimy, int max_iter,
+                double re_min, double re_max,
+                double im_min, double im_max){
   clock_t t;
   t = clock();
-  vector<int> sieve = mandelscript();
+  vector<int> sieve = mandelscript(dimx, dimy, max_iter,
+                                   re_min, re_max,
+                                   im_min, im_max);
   t = clock()-t;
   std::cout << "Laufzeit: " << (((float)t)/CLOCKS_PER_SEC) <<endl;
 
@@ -122,10 +126,10 @@ int main(void){
         << dimy << " " << dimx << endl
         << 255 << endl;
 
+  for(size_t bx = 0; bx < blocks_x; bx++){
+    for(size_t v = 0; v < veclen; v++){
+      for(size_t y = 0; y < dimy; y++){
 
-    for(size_t bx = 0; bx < blocks_x; bx++){
-      for(size_t v = 0; v < veclen; v++){
-        for(size_t y = 0; y < dimy; y++){
         double val = sieve[idx(bx, y) * veclen + v];
         // mplot << (int) pow((val / max_iter),0.2)*255 <<endl;
         mplot << (int) ((pow(val / max_iter,0.2)*255)) << endl;
@@ -133,5 +137,18 @@ int main(void){
     }
   }
   mplot.close();
-  return 0;
+  //return 0;
 }
+
+extern "C" void mfile(int dimx, int dimy, int max_iter,
+                      double re_min, double re_max,
+                      double im_min, double im_max){
+  return mandelfile(dimx, dimy, max_iter,
+                    re_min, re_max,
+                    im_min, im_max);
+}
+
+// int main(void){
+//   mandelfile(dimx, dimy, max_iter, re_min, re_max, im_min, im_max);
+//   return 0;
+// }

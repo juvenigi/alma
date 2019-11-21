@@ -49,14 +49,19 @@ vector<string> mergesort(vector<string>unsort){
 }
 
 int main(void){
-  vector<unsigned long int> v = randomized_v(5);
-  pv(v);
+  vector<unsigned long int> v = randomized_v(SIZ);
+  //pv(v);
 
   vector<string> sv = vconvert_str_i(v);
   //pv(sv);
 
+  clock_t t;
+  t = clock();
+
   vector<unsigned long int> merged = mergesort(v);
-  pv(merged);
+
+  cout << "Laufzeit:" << (((float)t)/CLOCKS_PER_SEC) <<endl;
+  //pv(merged);
 
   vector<string> smerged = mergesort(sv);
   //pv(smerged);

@@ -9,12 +9,15 @@
 #include <omp.h>
 #include <memory>
 #include <vector>
+#include <iostream>
 #include <fstream>
 #include <math.h>
+#include <time.h>
 
 #define SQ(x) ((x)*(x))
 
-int constexpr dimx = 2500;
+int constexpr dimx = 2500
+  ;
 int constexpr dimy = 2200;
 
 double constexpr re_min = -1.9;
@@ -107,7 +110,11 @@ vector<int> mandelscript(){
 }
 
 int main(void){
+  clock_t t;
+  t = clock();
   vector<int> sieve = mandelscript();
+  t = clock()-t;
+  std::cout << "Laufzeit: " << (((float)t)/CLOCKS_PER_SEC) <<endl;
 
   std::ofstream mplot;
   mplot.open("out.pgm");
@@ -116,10 +123,9 @@ int main(void){
         << 255 << endl;
 
 
-  for(size_t bx = 0; bx < blocks_x; bx++){
-    for(size_t v = 0; v < veclen; v++){
-      for(size_t y = 0; y < dimy; y++){
-
+    for(size_t bx = 0; bx < blocks_x; bx++){
+      for(size_t v = 0; v < veclen; v++){
+        for(size_t y = 0; y < dimy; y++){
         double val = sieve[idx(bx, y) * veclen + v];
         // mplot << (int) pow((val / max_iter),0.2)*255 <<endl;
         mplot << (int) ((pow(val / max_iter,0.2)*255)) << endl;

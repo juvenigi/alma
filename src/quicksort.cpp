@@ -35,14 +35,17 @@ vector<unsigned long int>quicksort(vector<unsigned long int> unsort){
 }
 
 int main(void){
-  vector<unsigned long int> v = randomized_v(20);
-  pv(v);
+  vector<unsigned long int> v = randomized_v(SIZ);
+  //pv(v);
 
   vector<string> sv = vconvert_str_i(v);
   //pv(sv);
-
+  clock_t t;
+  t = clock();
   vector<unsigned long int> quicked = quicksort(v);
-  pv(quicked);
+  t = clock()-t;
+  cout << "Laufzeit:" << (((float)t)/CLOCKS_PER_SEC) <<endl;
+  //pv(quicked);
 
   // vector<string> squicked = quicksort(sv);
   // pv(squicked);

@@ -1,0 +1,14 @@
+* File hierarchy revisited
+** How files are structured right now
+   currently, I have a simple system of maintaning fresh code in src/ and helper functions in src/deps and no longer needed files in src/old. this has a straightforward workflow where I simply #include cpp files located in deps and it works out just fine.
+** Issues
+   this is not a good way to maintain code for a few reasons:
+   1. you need header files to exist, either in src or as a separate include dir, up to you. But don't include .cpp files even though it's allowed by the compiler/preprocessor.
+   2. there is a bit of an issue finding lessons. I kinda like the system where lessons are separate folders with symbolic links to the source files. The reason being, I want to maintain a pool of source files to be accessible by the compiler, but I want to also have some kind of structure where it's easy to find individual lessons. Previously, I used org-mode files instead of a filestructure -- maybe do that again?
+   3. old files need to be dragged back into src/ in oder to be compilable again.
+** Solution
+   1. remove src/old, keep src/deps/, add directories to lessons src/l<num>.
+   2. Compartmentalize code by moving the main function to main.cpp
+   3. have a build folder for .o files and compiled executable. Revamp dirtypile to facilitate that kind of structure (honestly an improvement over how I'm doing things right now)
+   4. *OPTIONAL* implement dirtypile directives (comments in the first line, telling which arguments are needed for the specific compilation) [we're reinventing the wheel a bit here, but it's alright]
+

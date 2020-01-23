@@ -6,4 +6,4 @@ this is the collection of code dated 2019-2020. Use at your own discretion! It `
 
 I will try to update it and make it more readable, but I cannot guarantee anything.
 #### where are the lesson PDFs?
-https://ins.uni-bonn.de/teachings/ws-2019-294-v1g5-mb06-algorithmische-m/
+just ask me, the link constantly changes.
